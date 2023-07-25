@@ -25,6 +25,13 @@ pipeline {
                 sh 'cd server && npm install'
             }
         }
+
+        stage('Build') {
+            steps {
+                // Install Node.js dependencies
+                sh 'cd server && npm build'
+            }
+        }
         
         stage('Run Tests') {
             steps {
@@ -33,24 +40,13 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Deploy') {
             steps {
-                // Build the Docker image using the application files
-                sh "cd server && docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ./server"
+                // Run tests for your application
+                sh 'cd server && npm run start && cd .. && cd vue && npm run serve'
             }
         }
-
-        stage('Push to Docker Hub') {
-            steps {
-                // Log in to Docker Hub
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_REGISTRY_PASSWORD', usernameVariable: 'DOCKER_REGISTRY_USERNAME')]) {
-                    sh "docker login -u ${DOCKER_REGISTRY_USERNAME} -p ${DOCKER_REGISTRY_PASSWORD}"
-                }
-
-                // Push the Docker image to Docker Hub
-                sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-            }
-        }
+        
     }
 
     post {
