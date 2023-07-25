@@ -29,7 +29,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Install Node.js dependencies
-                sh 'cd server && npm build'
+                sh 'cd server && npm run build'
             }
         }
         
