@@ -1,7 +1,7 @@
 // app.test.js
 
 // Import the function to be tested
-const { sum } = require('vue/function.js');
+const { sum } = require('./function.js');
 
 // Sample test cases
 test('adds 1 + 2 to equal 3', () => {
