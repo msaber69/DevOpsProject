@@ -43,7 +43,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // Build the Docker image using the application files
-                sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
+                sh "export DOCKER_BUILDKIT=1 && docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
             }
         }
 
