@@ -22,28 +22,21 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install Node.js dependencies
-                sh 'npm install'
+                sh 'cd server && npm install'
             }
         }
         
-        stage('cd server') {
-            steps {
-                // cd vue to run the application
-                sh 'cd server'
-            }
-        }
-
         stage('Run Tests') {
             steps {
                 // Run tests for your application
-                sh 'npm test'
+                sh 'cd server && npm test'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 // Build the Docker image using the application files
-                sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
+                sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ./server"
             }
         }
 
