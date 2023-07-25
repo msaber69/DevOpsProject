@@ -50,12 +50,6 @@ pipeline {
     }
 
     post {
-        always {
-            // Clean up after the build, e.g., remove temporary Docker containers or volumes
-            sh "docker stop my-node-app-container || true" // Stop the running container (if exists)
-            sh "docker rm my-node-app-container || true"   // Remove the container (if exists)
-            sh "docker system prune -af"                  // Clean up unused resources
-        }
         success {
             echo 'Build successful! Deploy your application.'
         }
