@@ -51,7 +51,7 @@ pipeline {
 
     post {
         success {
-            echo 'Build successful! Deploy your application.'
+            echo 'Build successful! Your application is deployed.'
         }
         failure {
             echo 'Build failed! Check the logs for errors.'
