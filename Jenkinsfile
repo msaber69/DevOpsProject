@@ -41,9 +41,11 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                // Run tests for your application
-                sh 'cd server && npm run start && cd .. && cd vue && npm run serve'
+            timeout(time: 1, unit: 'SECONDS') {
+                steps {
+                    // Run tests for your application
+                    sh 'cd server && npm run start && cd .. && cd vue && npm run serve'
+                }
             }
         }
         
