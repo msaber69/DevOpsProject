@@ -19,10 +19,10 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build') {
             steps {
-                // Install Node.js dependencies
-                sh 'cd server && npm install'
+                // Install Node.js dependencies and build
+                sh 'cd server && npm install && npm run build'
             }
         }
         
@@ -33,24 +33,13 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Deploy') {
             steps {
-                // Build the Docker image using the application files
-                sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ./server"
+                 // Install Node.js dependencies, build and deploy
+                sh 'cd server && npm install && npm run build && npm run start'
             }
         }
 
-        stage('Push to Docker Hub') {
-            steps {
-                // Log in to Docker Hub
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_REGISTRY_PASSWORD', usernameVariable: 'DOCKER_REGISTRY_USERNAME')]) {
-                    sh "docker login -u ${DOCKER_REGISTRY_USERNAME} -p ${DOCKER_REGISTRY_PASSWORD}"
-                }
-
-                // Push the Docker image to Docker Hub
-                sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-            }
-        }
     }
 
     post {
@@ -59,7 +48,7 @@ pipeline {
             sh "docker system prune -af"
         }
         success {
-            echo 'Build successful! Deploy your application.'
+            echo 'Build successful! Your application is deployed on "http://localhost:8080".'
         }
         failure {
             echo 'Build failed! Check the logs for errors.'
