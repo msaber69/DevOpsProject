@@ -43,7 +43,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // Build the Docker image using the application files
-                sh " cd DevOpsProject-main && docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
+                sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
             }
         }
 
