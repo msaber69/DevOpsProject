@@ -61,8 +61,9 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                // Run tests for your application
-                sh './deploy.sh'
+                // Run the deploy.sh script
+                sh 'chmod +x deploy.sh' // Ensure the script has execute permissions
+                sh "./deploy.sh"
             }
         }
         
