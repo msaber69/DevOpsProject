@@ -40,30 +40,14 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                // Build the Docker image using the application files
-                sh "export DOCKER_BUILDKIT=1 && docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
-            }
-        }
-
-        stage('Push to Docker Hub') {
-            steps {
-                // Log in to Docker Hub
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_REGISTRY_PASSWORD', usernameVariable: 'DOCKER_REGISTRY_USERNAME')]) {
-                    sh "docker login -u ${DOCKER_REGISTRY_USERNAME} -p ${DOCKER_REGISTRY_PASSWORD}"
-                }
-
-                // Push the Docker image to Docker Hub
-                sh "docker push ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
-            }
-        }
-
         stage('Deploy') {
             steps {
-                // Run the deploy.sh script
-                sh 'chmod +x deploy.sh' // Ensure the script has execute permissions
-                sh "./deploy.sh"
+                // Stop and remove any existing containers
+                sh 'docker stop my-node-app-container || true'
+                sh 'docker rm my-node-app-container || true'
+
+                // Run the Docker container with the necessary ports and volumes
+                sh 'docker run -d -p 8081:8081 --name my-node-app-container saber69/devopsproject:latest'
             }
         }
         
