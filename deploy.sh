@@ -2,7 +2,7 @@
 
 echo "###### Deploying changes ######"
 
-# Replace '/path/to/your/app' with the actual path to your application's repository
+
 APP_PATH="/Users/msaber/Downloads/Web7-main"
 
 echo "------ Git pull ------"
